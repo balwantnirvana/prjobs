@@ -1,0 +1,13 @@
+.navbar-nav {
+    color: red !important;
+}
+.bsBellFill {
+    color: black !important;
+}
+.fiSettings {
+    color: #000000 !important;
+}
+
+.dropdown-toggle::after {
+    content: none;
+}

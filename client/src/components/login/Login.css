@@ -1,0 +1,12 @@
+.user-icon {
+    width: 70px;
+    height: 70px;
+    margin-bottom: 2rem;
+    margin-top: 2rem;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: red;
+    border-color: red;
+}
