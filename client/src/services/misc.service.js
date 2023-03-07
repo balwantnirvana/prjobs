@@ -3,6 +3,9 @@ import { authHeader } from "../helpers";
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 export const miscService = {
   getCountry,
+  getLanguages,
+  getIndustries,
+  getCities
 };
 
 
@@ -13,10 +16,42 @@ function getCountry() {
     headers: { ...authHeader(), "Content-Type": "application/json" },
   };
 
-  return fetch(`${API_BASE_URL}/country`, requestOptions).then(
+  return fetch(`${API_BASE_URL}/misc/country`, requestOptions).then(
     handleResponse
   );
 }
+
+function getLanguages() {
+  const requestOptions = {
+    method: "GET",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+  };
+
+  return fetch(`${API_BASE_URL}/misc/languages`, requestOptions).then(
+    handleResponse
+  );
+}
+function getIndustries() {
+  const requestOptions = {
+    method: "GET",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+  };
+
+  return fetch(`${API_BASE_URL}/misc/industries`, requestOptions).then(
+    handleResponse
+  );
+}
+function getCities() {
+  const requestOptions = {
+    method: "GET",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+  };
+
+  return fetch(`${API_BASE_URL}/misc/cities`, requestOptions).then(
+    handleResponse
+  );
+}
+
 
 function logout() {
     localStorage.removeItem("user");

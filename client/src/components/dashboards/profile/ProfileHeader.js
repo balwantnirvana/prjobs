@@ -11,15 +11,13 @@ const [values, setValues] = useState({user_image_url:'', company_name:'', first_
 
 useEffect(() => {
   if (user.profile) {
-    setValues({user_image_url:user.profile.user_image_url, company_name:user.profile.company_name, province:user.profile.province, city:user.profile.city});
+    setValues({user_image_url:user.profile.user_image_url, company_name:user.profile.company_name, province:user.profile.province, city:user.profile.city, first_name:user.profile.first_name,last_name:user.profile.last_name});
   }
 }, [user.loading]);
 
 let profileImage =  (values.user_image_url!== '') ? getfileUrl(values.user_image_url) : pimage;  
+let fullName = values.first_name+' '+values.last_name;
 
-if(user.loading){
-  //return null;
-}
  
   return (
     <div className="profile-block">
@@ -34,12 +32,12 @@ if(user.loading){
           </div>
         </div>
         <div className="profile-caption">
-         {   values.company_name &&  <h3>{values.company_name}</h3>} 
+         {   fullName &&  <h3>{fullName}</h3>} 
           <h4>
           {  values.city} {  values.province && <span>, {values.province}</span>} <img src={mapIcon} alt=""/>
           </h4>
         </div>
-        {(bc=="true")  && <BreadCrumb title={title}/>}
+        {(bc==="true")  && <BreadCrumb title={title}/>}
       </div>
     </div>
   );

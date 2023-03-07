@@ -8,6 +8,7 @@ const {
     getEmployerById,
     employerUploads,
     getAllEmployer,
+    deleteEmployer,
     test
   } = require('../controllers/employer.controller');
   
@@ -18,5 +19,7 @@ const {
   router.put('/employer/:id', authenticateToken, updateEmployer);
   router.post('/employer/uploads', uploadFile.single("file"), employerUploads);
   router.get('/employer/all/:id', authenticateToken, getAllEmployer);  
+  router.delete('/employer/:id', authenticateToken, deleteEmployer); 
+  
  
   module.exports = router;

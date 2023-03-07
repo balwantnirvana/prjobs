@@ -13,11 +13,11 @@ export const MyProfile = () => {
 
   const loadview = () => {
     
-      if (user_type === "Consultant")  {
+      if (user_type === "Consultants")  {
         return ( <ProfileConsultant/>); 
-      } else if (user_type === "Employer") {
+      } else if (user_type === "Employers") {
         return (<ProfileEmployer/> )
-      } else if (user_type === "Job Seeker"){
+      } else if (user_type === "Job Seekers"){
         return (<ProfileJobseeker/>)
       }
   };

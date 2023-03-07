@@ -10,13 +10,13 @@ import {employerActions } from "../../../redux/actions"
 import { useParams } from "react-router-dom";
 const EditEmployer = () => {
   const { id } = useParams();
-  const [loading, setLoading] = useState(true)
-  //const userinfo = useSelector((state) => state.authentication.user);  
+  const [data, setData] = useState({})
   const dispatch = useDispatch();
 
   const  fetchEmployer = async () => { 
-    dispatch(employerActions.getById(id)).then(()=>{
-      console.log('Done!');
+    dispatch(employerActions.getById(id)).then((data)=>{
+      //setData(data.payload);
+      //console.log('Done!');
     })
   }
 
@@ -29,9 +29,9 @@ const EditEmployer = () => {
       <BannerDashboard />
       <ProfileHeader bc="true" title="Edit Employer" />
       <section className="common-row dash-field lgray p-0 ex-space">
-        <EmployerProfileEditForm />
-        <EmployerJobInformationForm/>
-        <EmployerCompanyInfoForm/>
+        <EmployerProfileEditForm data={data}/>
+        <EmployerJobInformationForm data={data}/>
+        <EmployerCompanyInfoForm data={data}/>
         {/* <EmployerAdUserForm/> */}
         <hr className="divider" />
       </section>

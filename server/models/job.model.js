@@ -19,9 +19,10 @@ function job(sequelize) {
         education_detail: { type: DataTypes.TEXT, allowNull: false },
         experience: { type: DataTypes.STRING, allowNull: false },
         skills: { type: DataTypes.TEXT, allowNull: false },
-		skills2: { type: DataTypes.TEXT, allowNull: false },
+		job_detail: { type: DataTypes.TEXT, allowNull: false },
         capability: { type: DataTypes.TEXT, allowNull: false },
         documents: { type: DataTypes.TEXT, allowNull: false },
+        ielts_score: { type: DataTypes.DECIMAL(10,1), allowNull: false, defaultValue: 0.0},
         status: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: 1},
         is_expired: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: 0},
         views: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 0},
@@ -30,4 +31,20 @@ function job(sequelize) {
 
     return sequelize.define('tbl_jobs', attributes);
 }
+
+function JobApplication(sequelize) {
+    const attributes = {
+		id : {type: DataTypes.INTEGER, allowNull: false, autoIncrement:true, primaryKey:true},
+        job_id: { type: DataTypes.INTEGER, allowNull: false },
+        jobseeker_id : {type: DataTypes.INTEGER, allowNull: false},
+        consultant_id: { type: DataTypes.INTEGER, allowNull: false },
+        is_seen: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 0},
+        status: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 0},
+    }; 
+
+
+    return sequelize.define('tbl_job_application', attributes);
+}
+
 module.exports.Job = job
+module.exports.JobApplication = JobApplication

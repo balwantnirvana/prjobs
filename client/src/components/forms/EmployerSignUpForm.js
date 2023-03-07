@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { userService } from "../../services";
 
 import { useDispatch, useSelector } from 'react-redux';
-import {userActions, popupActions } from '../../redux/actions';
+import {popupActions } from '../../redux/actions';
 
 export default function EmployerSignUpForm() {
   const {
@@ -95,8 +95,8 @@ export default function EmployerSignUpForm() {
                               })}
                             >
                               <option value="">--Select--</option>
-                              <option value="Consultant">Consultant</option>
-                              <option value="Employer">Employer</option>
+                              <option value="Consultants">Consultant</option>
+                              <option value="Employers">Employer</option>
                             </select>
                             {errors.user_type && <p className="error">Please select user type !</p>}
                           </div>

@@ -8,7 +8,13 @@ export const jobService = {
   updateJob,  
   getById,
   getAll,
-  deleteJob
+  getAllByUser,
+  deleteJob,
+  getRecommendedJob,
+  getFilterJob,
+  applyForJob,
+  getJobApplications,
+  updateApplicationsStatus
 };
 
 
@@ -57,7 +63,33 @@ function deleteJob(id) {
   );
 }
 
-function getAll(id) {
+function getAll() {
+  const requestOptions = {
+    method: "GET",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+  };
+
+  return fetch(`${API_BASE_URL}/alljobs`, requestOptions).then(
+    handleResponse
+  );
+}
+
+function getFilterJob(data) {
+ 
+  const requestOptions = {
+    method: "POST",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  };
+
+  return fetch(`${API_BASE_URL}/alljobs`, requestOptions).then(
+    handleResponse
+  );
+}
+
+
+
+function getAllByUser(id) {
   const requestOptions = {
     method: "GET",
     headers: { ...authHeader(), "Content-Type": "application/json" },
@@ -67,6 +99,43 @@ function getAll(id) {
     handleResponse
   );
 }
+
+function getRecommendedJob(data){
+  const requestOptions = {
+    method: "POST",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  };
+  return fetch(`${API_BASE_URL}/job/recmjob`, requestOptions).then(handleResponse);
+}
+
+function applyForJob(data){
+  const requestOptions = {
+    method: "POST",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  };
+  return fetch(`${API_BASE_URL}/job-apply`, requestOptions).then(handleResponse);
+}
+
+function getJobApplications(data){
+  const requestOptions = {
+    method: "POST",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  };
+  return fetch(`${API_BASE_URL}/job-applications`, requestOptions).then(handleResponse);
+}
+
+function updateApplicationsStatus(data){
+  const requestOptions = {
+    method: "POST",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  };
+  return fetch(`${API_BASE_URL}/job-applications-status`, requestOptions).then(handleResponse);
+}
+
 
 function logout() {
     localStorage.removeItem("user");

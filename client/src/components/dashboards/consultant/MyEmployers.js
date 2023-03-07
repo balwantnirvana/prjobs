@@ -1,23 +1,24 @@
 import React, { useState, useEffect } from "react";
 import BannerDashboard from "../banner/BannerDashboard";
 import ProfileHeader from "../profile/ProfileHeader";
-import truck from "../../../img/truck-icon.png";
-import food from "../../../img/food-icon.png";
-import pin from "../../../img/w-map.png";
+
 import { Link } from "react-router-dom";
 import { employerActions } from "../../../redux/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { currentUser } from "../../../helpers";
+import { EmployerCard } from "./EmployerCard";
+import { employerService } from "../../../services";
+
 
 const MyEmployers = () => {
-  const data = useSelector((state) => state.employerDetail);
+ // const data = useSelector((state) => state.employerDetail);
   const [values, setValues] = useState([]);
+  const [action, setAction] = useState({'msg' : '','deleting':false,'isDeleted':false,'hide':false});
   const dispatch = useDispatch();
 
   const fetchEmployer = async () => {
     let user = currentUser();
     if (user.id) {
-      console.log(user.id);
         dispatch(employerActions.getAll(user.id)).then((data) => {
         setValues([...data.payload]);
       });
@@ -27,6 +28,25 @@ const MyEmployers = () => {
     fetchEmployer();
   }, [dispatch]);
 
+  const deleteEmployer = async (id)=> {
+    setAction({...action,'deleting':true});
+    try { 
+      const response = await employerService.deleteEmployer(id);
+      if(response){
+        setAction({...action,'deleting':false,'msg':response.msg,'isDeleted':response.success});
+        fetchEmployer();
+      }
+     
+    } catch (error) {
+      console.log(error);
+      setAction({...action,'deleting':false,'msg':error.msg, 'isDeleted':error.success});
+
+    }
+  }
+  const handleDelete = (e,id) =>{
+    e.preventDefault()
+    deleteEmployer(id); 
+  }
   return (
     <>
       <BannerDashboard />
@@ -47,37 +67,12 @@ const MyEmployers = () => {
         <div className="container">
           <div className="col-3-common flex-wrap">
             {values && values.map((item, index) => (
-              <div className="common-box" key={index}>
-                
-                <span className="count">{index + 1}</span>
-                <i className="icon">
-                  <img src={truck} alt="" />
-                </i>
-                <h3>{item.business_name}</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
-                <p className="map-icon">
-                  {item.business_address} <img src={pin} />
-                </p>
-                <a href={`edit-employer/${item.id}`} className="box-btn">
-                  Edit Info <i className="fa fa-pencil"></i>
-                </a>
-                {/* <Link to={`edit-employer/${item.id}`} className="box-btn">Edit Info <i className="fa fa-pencil"></i></Link> */}
-              </div>
+              <EmployerCard index={index} handleDelete = {handleDelete} item={item} key={index} action={action}/>
             ))}
-
-            {/* <div className="common-box blue"> <span className="count">02</span> <i className="icon"><img src={food} alt="" /></i>
-        <h3>Indian Curry House</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur 
-          adipiscing elit, sed do eiusmod tempor 
-          incididunt ut labore et dolore magna 
-          aliqua. Ut enim ad minim veniam, 
-          quis nostrud exercitation ullamco. </p>
-        <p className="map-icon">33 Sage Valley Cir NW Calgary <img src={pin} /></p>
-        <a href="#" className="box-btn">Edit Info <i className="fa fa-pencil"></i></a> </div> */}
           </div>
           <p className="add-employer-row">
             <Link to="/add-employer" className="btn md-btn">
-              {" "}
+              
               Add Employer<i className="fa fa-plus-circle"></i>
             </Link>
           </p>

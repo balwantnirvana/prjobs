@@ -5,8 +5,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { Redirect, useHistory } from "react-router-dom";
 import { useParams } from 'react-router-dom';
 import { Link } from "react-router-dom";
-export const EmployerProfileEditForm = ({ loading }) => {
-  const userinfo = useSelector((state) => state.authentication.user);
+import { currentUser } from "../../../helpers";
+export const EmployerProfileEditForm = () => {
+  const userinfo = currentUser();
   const data = useSelector((state) => state.employerDetail);
   const { id } = useParams();
   let history = useHistory();
@@ -49,9 +50,8 @@ export const EmployerProfileEditForm = ({ loading }) => {
  useEffect(()=>{
      if(data.detail){
          updateObj();
-         
       }
-      
+      console.log(data);
  },[data.loading])
   
   const {
@@ -90,7 +90,7 @@ export const EmployerProfileEditForm = ({ loading }) => {
       setForm({ ...form, submitted: false, message: error.msg });
     }
   };
-  if (data.loading) return null;
+  //if (data.loading) return null;
 
   return (
     <section className="common-row lgray p-t0">

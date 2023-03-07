@@ -305,6 +305,29 @@ const getEmployerById = async (req, res) => {
     res.status(400).send(err);
   }
 };
+
+const deleteEmployer = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const result = await db.EmployerDetail.destroy({ where: { id: id } });
+    if (result) {
+      res.status(200).send({
+        msg: "Employer has been successfully deleted!",
+        success: true,
+      });
+    } else {
+      res.status(200).send({
+        success: false,
+        msg: "Something went wrong",
+      });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(err);
+  }
+};
+
+
 const getAllEmployer = async (req, res) => {
   try {
     const cid = req.params.id;
@@ -370,5 +393,6 @@ module.exports = {
   getEmployerById,
   employerUploads,
   getAllEmployer,
+  deleteEmployer,
   test,
 };

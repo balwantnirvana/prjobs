@@ -3,19 +3,34 @@ import { Banner } from './Banner'
 import { useForm } from "react-hook-form";
 import { currentUser, provinces } from '../../../helpers';
 import DatePicker from "react-datepicker";
-import { useDispatch, useSelector } from "react-redux";
 import "react-datepicker/dist/react-datepicker.css";
+import { useDispatch, useSelector } from "react-redux";
+import ReactTagInput from "@pathofdev/react-tag-input";
+import "@pathofdev/react-tag-input/build/index.css";
+
 import {employerActions } from "../../../redux/actions"
 import {jobService} from "../../../services"
 import { useHistory } from 'react-router-dom';
+
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+
+
 export const AddJob = () => {
-  const [frmstate, setFrmstate] = useState({ message: "", submitted: false });
+    const [frmstate, setFrmstate] = useState({ message: "", submitted: false });
     const [startDate, setStartDate] = useState(new Date());
     const {register,handleSubmit,formState: { errors }, } = useForm();
+    const [tags, setTags] = useState([]);
     //const empdata = useSelector((state) => state.employerDetail);
     const [empvalues, setEmpValues] = useState([]);
     const history = useHistory();
-  const dispatch = useDispatch();
+    const dispatch = useDispatch();
+    const [contentHtml, setContentHtml] = useState('')
+    const [showEditor, setShowEditor] = useState(false)
+    const education_list = ["High school","Bachelor degree","Master degree","Doctorate"]
+    const [eduvalue, setEduValue] = useState([])
+    const [ielts, setIelts] = useState(false)
+
   const  fetchJob = async () => { 
     dispatch(employerActions.getAll(currentUser().id)).then((data)=>{
       setEmpValues([...data.payload]);
@@ -27,12 +42,27 @@ export const AddJob = () => {
     fetchJob();
   }, []);
     
-  
-
+  const handleEditorChange = (e, editor) =>{
+    const data = editor.getData();
+    setContentHtml(data);
+  } 
+  const hadleEducation = (e) => {
+    let checked  = e.target.checked;
+    let updatedList = [...eduvalue];
+    if(checked){
+      updatedList = [...updatedList,e.target.value];
+    } else {
+      updatedList.splice(updatedList.indexOf(e.target.value), 1);
+    }
+    setEduValue(updatedList);
+  }
   const onSubmit = async (data ) => {
     setFrmstate({...frmstate,message: "",submitted: true });
     data['uid'] =  currentUser().id;
     data['end_date'] =  startDate;
+    data['skills'] =  tags.toString();
+    data['job_detail'] = contentHtml;
+    data['education'] =  eduvalue.toString();
     try {
       const response = await jobService.addJob(data);
       setFrmstate({...frmstate,message: response.msg,submitted: false });
@@ -64,7 +94,23 @@ export const AddJob = () => {
           {errors.job_title && <p className="error">Please fill the required field.</p>}
         </div>
       </div>
-
+      <div className="row">
+        <div className="col-sm-12">
+          <label>Job Category </label>
+          <div className="box-in">
+             <select {...register("job_category", { required: true })}>
+              <option value="">--Select--</option>
+              <option value="Automotive">Automotive</option>
+              <option value="Construction">Construction</option>
+              <option value="Health Care">Health Care</option>
+              <option value="Hospitality">Hospitality</option>
+              <option value="Logistics">Logistics</option>
+              <option value="Manufacturing">Manufacturing</option>
+              <option value="Software">Software</option>
+            </select>
+          </div>
+          </div>  
+          </div>
       <div className="row">
         <div className="col-sm-12">
           <label>Company Name/Employer</label>
@@ -149,7 +195,7 @@ export const AddJob = () => {
       </div>
 
 
-      <div className="row">
+      {/* <div className="row">
         
         <div className="col-sm-6">
           <label>Required Educational Qualifications</label>
@@ -168,61 +214,97 @@ export const AddJob = () => {
               Industry Specific Certification</label>
           </div>
         </div>
-      </div>
+      </div> */}
     
-      <div className="row">
-        <div className="col-sm-12">
-          <label>Additional Educational Details </label>
-          <textarea {...register("education_detail", { required: false })} placeholder="E.g. Additional Information pertaining to educational qualifications or certifications specific to your job opening. "></textarea>
-        </div>
-      </div>
+      
       <div className="row">
         <div className="col-sm-12">
           <label>Years Of Experience </label>
-          <div className="choice lg">
-            <label className="auto">
-              <input type="checkbox" {...register("experience", { required: true })}/>
-              0 - 1 Year </label>
-            <label className="auto">
-              <input type="checkbox"/>
-              1 - 2 Years </label>
-            <label className="auto">
-              <input type="checkbox"/>
-              2 - 3 Years</label>
-            <label className="auto">
-              <input type="checkbox"/>
-              3 - 4 Years </label>
-            <label className="auto">
-              <input type="checkbox"/>
-              5 Years +</label>
+          <div className="box-in">
+             <select {...register("experience", { required: true })}>
+              <option value="">--Select--</option>
+              <option value="1">1 Year</option>
+              <option value="2">2 Years</option>
+              <option value="3">3 Years</option>
+              <option value="4">4 Years</option>
+              <option value="5">5 Years</option>
+              <option value="6">6 Years</option>
+              <option value="7">7 Years</option>
+              <option value="8">8 Years</option>
+              <option value="9">9 Years</option>
+              <option value="10">10+ Years</option>
+            </select>
           </div>
         </div>
-       
       </div>
+
       <div className="row">
         <div className="col-sm-12">
-          <label>Primary Job Specifications & Skills</label>
-          <textarea {...register("skills", { required: true })} placeholder="E.g. An in depth description of the skills required to apply for this job "></textarea>
-          {errors.skills && <p className="error">Please fill the required field.</p>} 
+          <label>Education qualification </label>
+          {education_list.map((value,index) => (
+           <label key={index}><input type="checkBox" value={value} onChange={hadleEducation}/>{value}</label>
+          ))}
+
+          </div>
+      </div>
+
+      <div className="row">
+          <div className="col-sm-6">
+              <label> <input type="checkBox" value="1" onChange={()=>{ setIelts(!ielts)}}/>IELTS Score Require for this job? </label>
+          </div>
+          { ielts && 
+          <div className="col-sm-6">
+              <label>Minimum IELTS score</label>
+                <select {...register("ielts_score", { required: true })}>
+                <option value="">---Select---</option>
+                  <option value="9.0">9.0+</option>
+                  <option value="8.5">8.5</option>
+                  <option value="8.0">8.0</option>
+                  <option value="7.5">7.5</option>
+                  <option value="7.0">7.0</option>
+                  <option value="6.5">6.5</option>
+                  <option value="6.0">6.0</option>
+                  <option value="5.5">5.5</option>
+                  <option value="5.0">5.0</option>
+                  <option value="4.5">4.5</option>
+                  <option value="4.0">4.0</option>
+                  <option value="3.5">3.5</option>
+                  <option value="3.0">3.0 or less</option> 
+                </select>
+          </div> 
+          }
+      </div>
+
+      <div className="row">
+        <div className="col-sm-12">
+          <label>Job Specifications & Skills</label>
+          <ReactTagInput tags={tags} onChange={(newTags) => setTags(newTags)} placeholder="Enter Skill and then hit enter after each skill"/>
+
+          {/* <textarea {...register("skills", { required: true })} placeholder="E.g. An in depth description of the skills required to apply for this job "></textarea>
+          {errors.skills && <p className="error">Please fill the required field.</p>}  */}
         </div>
         <div className="col-sm-12">
-          <label>Additional Job Specifications & Skills</label>
-          <textarea {...register("skills2", { required: false })} placeholder="E.g. An in depth description of the additional skills required to apply for this job"></textarea>
+          <label> Job Detail</label>
+          <CKEditor editor={ ClassicEditor } onChange = {handleEditorChange}  config={ {
+                           
+                           toolbar: [ 'bold', 'italic', 'link', 'undo', 'redo', 'numberedList', 'bulletedList' ]
+                        } }/> 
+          {/* <textarea {...register("job_detail", { required: false })} placeholder="E.g. An in depth description of the additional skills required to apply for this job"></textarea> */}
         
         </div>
-        <div className="col-sm-12">
+        {/* <div className="col-sm-12">
           <label>Work Conditions & Physical Capabilities</label>
           <textarea {...register("capability", { required: false })} placeholder="E.g. An in depth description of the work conditions and expected physical capabilities required to apply for this job "></textarea>
-        </div>
+        </div> */}
         
         {/* <div className="col-sm-12">
           <label>Software & Business Systems</label>
           <textarea placeholder="E.g. please specify details on the softwares and business systems that the applicant would need to be aware of to apply for the position"></textarea>
         </div> */}
-        <div className="col-sm-12">
+        {/* <div className="col-sm-12">
           <label>List Of Documentation </label>
           <textarea {...register("documents", { required: false })} placeholder="E.g. please list a set of personal documents you would require from the candidate so that they can apply for the position"></textarea>
-        </div>
+        </div> */}
       </div>
       <div className="row">
         <div className="col-sm-12">

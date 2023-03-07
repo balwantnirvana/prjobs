@@ -1,16 +1,85 @@
-import React from 'react'
-
+import React from "react";
+import banner  from '../img/inner-banner.jpg'
+import { Link } from "react-router-dom";
+import { useDispatch} from 'react-redux';
+import {popupActions} from '../redux/actions'
+import { isLoggedIn , currentUser} from '../helpers';
+ 
 const Pricing = () => {
-    return (
-        <div className='common-content'>
-        <div className='container'>
-            <h1>Pricing</h1>
-        <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur</p>
-<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur</p>
-<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur</p>
-            
+  const dispatch = useDispatch();
+  
+
+  return (
+    <>
+      <section className="inner-banner">
+        <div className="bg"  style={{backgroundImage:`url(${banner})`}}>
+          <img src={banner} alt="" />
         </div>
-    </div>
-    )
-}
-export default Pricing
+        <div className="caption">
+          <div className="container">
+            <div className="box">
+              <div className="heading">Pricing</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="common-content dgray">
+        <div className="container">
+          <h2 className="f-30">flexible pay as you go</h2>
+
+          <p>Select from one of the below packages to register with us.</p>
+
+          <div className="pricing-row flex-wrap">
+            <div className="pricing-box">
+              <h3>Basic</h3>
+
+              <p className="price">$60.00 / monthly</p>
+
+              <p>50 job posting</p>
+              {/* <p>0 featured job</p> */}
+              <p>Premium Support 24/7</p>
+
+              <p className="btn-row">
+                {isLoggedIn() ? <Link to={`checkout/1`} className="btn third-btn">Get started!</Link> : <a  className="btn third-btn" onClick={() => dispatch(popupActions.open("login"))}>Get started</a>}
+                
+              </p>
+            </div>
+            <div className="pricing-box">
+              <h3>Most Popular</h3>
+              <h4>Standard</h4>
+              <p className="price">$90.00 / monthly</p>
+
+              <p>100 job posting</p>
+              {/* <p>10 featured job</p> */}
+             
+              <p>Premium Support 24/7</p>
+
+              <p className="btn-row">
+              {/* <Link to={`checkout/2`} className="btn third-btn">Get started!</Link> */}
+              {isLoggedIn() ? <Link to={`checkout/2`} className="btn third-btn">Get started!</Link> : <a className="btn third-btn" onClick={() => dispatch(popupActions.open("login"))}>Get started</a>}
+               
+              </p>
+            </div>
+            <div className="pricing-box">
+              <h3>Premium</h3>
+
+              <p className="price">$120.00 / monthly</p>
+
+              <p> 150 job posting</p>
+              {/* <p>35 featured job</p>
+              <p>35 featured job</p> */}
+              <p>Premium Support 24/7</p>
+
+              <p className="btn-row">
+              {/* <Link to={`checkout/3`} className="btn third-btn">Get started!</Link> */}
+              {isLoggedIn() ? <Link to={`checkout/3`} className="btn third-btn">Get started!</Link> : <a className="btn third-btn" onClick={() => dispatch(popupActions.open("login"))}>Get started</a>}
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
+  );
+};
+export default Pricing;

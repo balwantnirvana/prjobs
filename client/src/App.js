@@ -34,7 +34,13 @@ import EditEmployer from './components/dashboards/consultant/EditEmployer';
 import { JobsPosted } from './components/dashboards/jobs/JobsPosted';
 import { AddJob } from './components/dashboards/jobs/AddJob';
 import { EditJob } from './components/dashboards/jobs/EditJob';
-import { ViewJob } from './components/dashboards/jobs/ViewJob';
+import { ViewJob } from './components/jobs/ViewJob';
+import { Joblist } from './components/jobs/JobList';
+import { JobApplications } from './components/dashboards/consultant/JobApplications';
+import { ProfileGlobal } from './components/dashboards/jobseeker/ProfileGlobal';
+import { Checkout } from './pages/Checkout';
+import { EditProfile } from './components/dashboards/profile/EditProfile';
+
 
 export default function App() {
   //const alert = useSelector(state => state.alert);
@@ -43,17 +49,12 @@ export default function App() {
 
   useEffect(() => {
     
-      if(currentUser().id){
-        dispatch(userActions.getById(currentUser().id))
-      }
-    
     history.listen((location, action) => {
         //clear alert on location change
         dispatch(alertActions.clear());
         dispatch(popupActions.close());
     });
 }, []);
-
 
   const renderNav = () => {
     if (isLoggedIn())
@@ -85,7 +86,12 @@ export default function App() {
           <PrivateRoute component={JobsPosted} path="/jobs-posted" exact />
           <PrivateRoute component={AddJob} path="/add-job" exact />
           <PrivateRoute component={EditJob} path="/edit-job/:id" exact />
+          <Route component={Joblist} path="/jobs" exact />
           <Route component={ViewJob} path="/job/:id" exact />
+          <Route component={ProfileGlobal} path="/user-profile/:id" exact />
+          <Route component={Checkout} path="/checkout/:id" exact />
+          <PrivateRoute component={JobApplications} path="/job-applications/:id" exact />
+          <PrivateRoute component={EditProfile} path="/edit-profile/:id" exact />
           {/* <Redirect from="*" to="/" /> */}
         </Switch>
         <Footer /> 

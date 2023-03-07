@@ -23,11 +23,14 @@ const updateJob = async (req, res) => {
       nationality,
       date_of_birth,
       marital_status,
-      ielts_certificate,
+      ielts_score,
       canadian_education,
       skills,
       total_experience,
-      education
+      education,
+      course,
+      job_category,
+      profile_detail
     } = req.body;
     const id = req.params.id;
 
@@ -53,11 +56,14 @@ const updateJob = async (req, res) => {
         nationality,
         date_of_birth,
         marital_status,
-        ielts_certificate,
+        ielts_score,
         canadian_education,
         skills,
         total_experience,
-        education
+        education,
+        course,
+        job_category,
+        profile_detail
       },
       { where: { id: id } }
     );

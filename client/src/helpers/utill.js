@@ -49,3 +49,26 @@ export const provinces = () =>{
       return provinces;
 
 }
+
+
+export const categoryIcon = (value) => {
+    
+    const icons = [
+        {'category':'Automotive', 'icon':'flaticon-settings'},
+        {'category':'Construction', 'icon' :'flaticon-safety'},
+        {'category':'Health Care', 'icon': 'flaticon-first-aid-kit'},
+        {'category': 'Hospitality', 'icon':'flaticon-reception'},
+        {'category': 'Logistics', 'icon':'flaticon-delivery-truck'},
+        {'category': 'Manufacturing', 'icon': 'flaticon-manufacturer'},
+        {'category':'Software', 'icon':'flaticon-manufacturer'}
+    ]
+
+    let result = icons.find(o => o.category === 'Software')
+    
+    if(result!== undefined) {
+        return result.icon;
+    } else {
+        return 'flaticon-settings';
+    }
+   
+}

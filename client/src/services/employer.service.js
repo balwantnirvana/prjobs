@@ -2,13 +2,13 @@ import axios from "axios";
 import { authHeader } from "../helpers";
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 //const API_BASE_URL = "http://3.131.231.110:34677/api";
-console.log(API_BASE_URL);
 export const employerService = {
   addEmployer,
   updateEmployer,  
   getById,
   employerUploads,
-  getAll
+  getAll,
+  deleteEmployer
 };
 
 
@@ -49,6 +49,17 @@ function getById(id) {
   const requestOptions = {
     method: "GET",
     headers: authHeader(),
+  };
+
+  return fetch(`${API_BASE_URL}/employer/${id}`, requestOptions).then(
+    handleResponse
+  );
+}
+
+function deleteEmployer(id) {
+  const requestOptions = {
+    method: "DELETE",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
   };
 
   return fetch(`${API_BASE_URL}/employer/${id}`, requestOptions).then(

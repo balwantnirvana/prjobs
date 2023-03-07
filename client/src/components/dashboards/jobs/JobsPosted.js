@@ -6,13 +6,14 @@ import { jobActions } from "../../../redux/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { currentUser } from "../../../helpers";
 import { JobOverview } from "./JobOverview";
-
+import { jobService } from "../../../services";
 export const JobsPosted = () => {
   const [frmstate, setFrmstate] = useState({ message: "", loading: true, deleting: false });
+  const [action, setAction] = useState({'msg' : '','deleting':false,'isDeleted':false,'hide':false});
   const [values, setValues] = useState([]);
   const dispatch = useDispatch();
   const fetchJob = async () => {
-    dispatch(jobActions.getAll(currentUser().id)).then((data) => {
+    dispatch(jobActions.getAllByUser(currentUser().id)).then((data) => {
       setValues([...data.payload]);
       //console.log(data);
     });
@@ -21,15 +22,21 @@ export const JobsPosted = () => {
   useEffect(() => {
     fetchJob();
   }, []);
-  const handleDelete = (e, id) => {
+  const handleDelete = async(e, id) => {
     e.preventDefault();
-    setFrmstate({...frmstate, deleting:true});
-    console.log(id)
-    dispatch(jobActions.deleteJob(id)).then((data) => {
-      //fetchJob();
-      setFrmstate({...frmstate, deleting:false});
-      //console.log(data);
-    });
+    setAction({...action,'deleting':true});
+    try { 
+      const response = await jobService.deleteJob(id);
+      if(response){
+        setAction({...action,'deleting':false,'msg':response.msg,'isDeleted':response.success});
+        fetchJob();
+      }
+     
+    } catch (error) {
+      console.log(error);
+      setAction({...action,'deleting':false,'msg':error.msg, 'isDeleted':error.success});
+
+    }
   }
 
   return (
@@ -67,8 +74,8 @@ export const JobsPosted = () => {
   </div> */}
 
         <div className="job-row-wrap">
-          {values &&
-            values.map((job, index) => <JobOverview key={index} handleDelete = {handleDelete} deleting={frmstate.deleting} data={job} />)}
+          {values ?
+            (values.map((job, index) => <JobOverview key={index} handleDelete = {handleDelete} deleting={action.deleting} data={job} />) ) : ''}
         </div>
       </section>
     </>

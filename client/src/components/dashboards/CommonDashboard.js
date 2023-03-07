@@ -8,11 +8,11 @@ export const CommonDashboard = () => {
   console.log(user_type)
   const loadview = () => {
     
-    if (user_type === "Consultant")  {
+    if (user_type === "Consultants")  {
       return (  <ConsultantDashboard />); 
-    } else if (user_type === "Employer") {
+    } else if (user_type === "Employers") {
       return ( <ConsultantDashboard /> )
-    } else if (user_type  === "Job Seeker"){
+    } else if (user_type  === "Job Seekers"){
       return (  <JobSeekerDashboard />); 
     }
 };

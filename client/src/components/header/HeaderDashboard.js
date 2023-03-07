@@ -22,7 +22,18 @@ const HeaderDashboard = () => {
     company_name: "",
     province: "",
     city: "",
+    first_name : '',
+    last_name:''
   });
+
+  useEffect(() => { 
+    //console.log(currentUser().id)
+    if(currentUser().id){
+      dispatch(userActions.getById(currentUser().id))
+      console.log(currentUser().id)
+    }
+      
+  }, []);
 
   useEffect(() => {
     if (user.profile) {
@@ -31,6 +42,8 @@ const HeaderDashboard = () => {
         company_name: user.profile.company_name,
         province: user.profile.province,
         city: user.profile.city,
+        first_name : user.profile.first_name,
+        last_name : user.profile.last_name,
       });
     }
   }, [user.loading]);
@@ -48,15 +61,15 @@ const HeaderDashboard = () => {
   }
 
   const nav = () => {
-    if (user_type === "Consultant") {
+    if (user_type === "Consultants") {
       return (
         <>
           <li>
             <Link to="/dashboard">HOME</Link>
           </li>
           {/* <li>
-        <Link to="/my-account">MY ACCOUNT</Link>
-      </li> */}
+          <Link to="/my-account">MY ACCOUNT</Link>
+          </li> */}
           <li>
             <Link to="/profile">MY PROFILE</Link>
           </li>
@@ -76,7 +89,7 @@ const HeaderDashboard = () => {
       <a href="#">MY DOCUMENTS</a></li> */}
         </>
       );
-    } else if (user_type === "Job Seeker") {
+    } else if (user_type === "Job Seekers") {
       return (
         <>
           <li>
@@ -90,6 +103,9 @@ const HeaderDashboard = () => {
           </li>
           <li>
             <Link to="/change-password">CHANGE PASSWORD</Link>
+          </li>
+          <li>
+            <Link to="/jobs">JOBS</Link>
           </li>
         </>
       );

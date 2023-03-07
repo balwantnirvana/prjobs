@@ -3,7 +3,7 @@
   const { Sequelize } = require('sequelize');
   const {User} = require("../models/user.model");
   const {EmployerDetail} = require("../models/employer.model");
-  const {Job} = require("../models/job.model");
+  const {Job, JobApplication} = require("../models/job.model");
   
   module.exports = db = {};
   
@@ -27,6 +27,8 @@
       db.User = User(sequelize);
       db.EmployerDetail = EmployerDetail(sequelize);
       db.Job = Job(sequelize);
+      db.JobApplication = JobApplication(sequelize);
+      
      
       db.conn = connection; 
   

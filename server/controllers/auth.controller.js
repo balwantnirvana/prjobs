@@ -89,7 +89,10 @@ const register = async (req, res) => {
       nationality : '',
       skills : '',
       education : '',
-      total_experience: ''
+      job_category: '',
+      course: '',
+      profile_detail: '',
+      ielts_score: 0.0
     });
 
     const token = generateAccessToken(user);

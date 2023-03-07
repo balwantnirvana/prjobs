@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { userService } from "../../services";
 
 import { useDispatch, useSelector } from 'react-redux';
-import {userActions, popupActions } from '../../redux/actions';
+import {popupActions } from '../../redux/actions';
 
 export default function JobSeekerSignUpForm() {
   const {
@@ -24,9 +24,9 @@ export default function JobSeekerSignUpForm() {
     setSubmitted(true);
     setMessage("");
     try {
-      data['user_type'] = 'Job Seeker';
+      data['user_type'] = 'Job Seekers';
       const response = await userService.register(data);
-      console.log(response);
+      //console.log(response);
       setSubmitted(false);
       setMessage(response.msg);
       e.target.reset();

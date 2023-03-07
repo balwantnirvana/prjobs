@@ -76,6 +76,7 @@ export const EditProfile = ({ setIsEdit}) => {
       inputs.id = user.profile.id;
       const response = await userService.update(inputs);
       setFrmstate({...frmstate, submitted: false, message: response.msg });
+      setIsEdit(false);
       dispatch(userActions.getById(user.profile.id)).then(()=>{
         setTimeout(() => {
          setIsEdit(false);
@@ -92,7 +93,7 @@ export const EditProfile = ({ setIsEdit}) => {
   
  
   if (user.loading) {
-    return null;
+    //return null;
   }
   return (
     <form onSubmit={handleSubmit}>

@@ -1,31 +1,31 @@
 import { employerConstants } from "../constants";
 
-export function employerDetail(state = { loading: true }, action) {
+export function employerDetail(state = { }, action) {
   switch (action.type) {
-    case employerConstants.DETAIL_REQUEST:
+    case employerConstants.EMP_DETAIL_REQUEST:
       return {
         loading: true,
       };
-    case employerConstants.DETAIL_SUCCESS:
+    case employerConstants.EMP_DETAIL_SUCCESS:
       return {
         detail: action.payload,
         loading: false,
       };
-    case employerConstants.DETAIL_FAILURE:
+    case employerConstants.EMP_DETAIL_FAILURE:
       return {
         error: action.error,
         loading: false,
       };
-    case employerConstants.GETALL_REQUEST:
+    case employerConstants.EMP_GETALL_REQUEST:
       return {
         loading: true,
       };
-    case employerConstants.GETALL_SUCCESS:
+    case employerConstants.EMP_GETALL_SUCCESS:
       return {
         detail: action.payload,
         loading: false,
       };
-    case employerConstants.GETALL_FAILURE:
+    case employerConstants.EMP_GETALL_FAILURE:
       return {
         error: action.error,
         loading: false,
